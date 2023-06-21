@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -16,6 +17,15 @@ namespace GSPtrakOCR
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
         [DllImport("user32.dll")]
         public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
+
+        public static IntPtr WinGetHandle(string wName)
+        {
+            foreach (Process pList in Process.GetProcesses())
+                if (pList.MainWindowTitle.Contains(wName))
+                    return pList.MainWindowHandle;
+
+            return IntPtr.Zero;
+        }
 
         public static Bitmap PrintWindow(IntPtr hwnd) //hwnd = window handle
         {
